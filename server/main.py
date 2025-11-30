@@ -17,6 +17,10 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/")
+def health_check():
+    return {"status": "active"}
+
 @app.post("/api/register", response_model=schemas.Agent)
 def register_agent(agent: schemas.AgentCreate, db: Session = Depends(get_db)):
     db_agent = models.Agent(**agent.dict())
