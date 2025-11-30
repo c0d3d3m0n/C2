@@ -24,14 +24,14 @@ def list_agents():
     except Exception as e:
         print(f"[-] Error: {e}")
 
-def list_tasks(agent_id):
+def list_tasks(agent_id, show_output=False):
     try:
         response = requests.get(f"{SERVER_URL}/api/tasks/{agent_id}")
         tasks = response.json()
         print(f"\n[*] Tasks for Agent {agent_id}:")
         for task in tasks:
             print(f"ID: {task['id']} | Command: {task['command']} | Status: {task['status']}")
-            if task['status'] == 'completed':
+            if show_output and task['status'] == 'completed':
                 # Fetch result
                 res = requests.get(f"{SERVER_URL}/api/results/{task['id']}")
                 if res.status_code == 200:
@@ -106,6 +106,7 @@ def main():
     # Tasks command
     tasks_parser = subparsers.add_parser("tasks", help="List tasks for an agent")
     tasks_parser.add_argument("agent_id", help="Agent ID")
+    tasks_parser.add_argument("--show-output", "-o", action="store_true", help="Show output of completed tasks")
     
     # Exec command
     exec_parser = subparsers.add_parser("exec", help="Execute a command on an agent")
@@ -141,7 +142,7 @@ def main():
     if args.command == "agents":
         list_agents()
     elif args.command == "tasks":
-        list_tasks(args.agent_id)
+        list_tasks(args.agent_id, args.show_output)
     elif args.command == "exec":
         cmd_args = " ".join(args.args) if args.args else None
         queue_task(args.agent_id, "shell", f"{args.cmd} {cmd_args}" if cmd_args else args.cmd)
