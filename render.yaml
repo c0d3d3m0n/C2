@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: c2-server
+    env: docker
+    plan: free
+    branch: main
+    autoDeploy: true
