@@ -50,6 +50,11 @@ Defenders use C2 traffic analysis to identify compromises:
    pip install -r requirements.txt
    ```
 
+## Documentation
+
+- Detailed project documentation: [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md)
+- Generate a Word report: `python generate_project_report.py`
+
 ## Usage
 
 ### Starting the Server
